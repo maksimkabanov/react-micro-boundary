@@ -3,12 +3,19 @@
   "version": "1.0.2",
   "description": "Microtask-based React Error Boundary integrated with window.onerror and microfrontend support",
   "main": "dist/index.js",
-  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "vitest run"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maksimkabanov/react-micro-boundary.git"
+  },
+  "bugs": {
+    "url": "https://github.com/maksimkabanov/react-micro-boundary/issues"
+  },
+  "homepage": "https://github.com/maksimkabanov/react-micro-boundary#readme",
   "peerDependencies": {
     "react": ">=16.8.0"
   },
