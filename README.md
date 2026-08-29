@@ -1,6 +1,14 @@
 # react-micro-boundary
 
-A lightweight, microtask-powered React Error Boundary combined with global window error handlers (`window.onerror` and `unhandledrejection`). Designed specifically for microfrontend architectures and modern React applications to eliminate duplicate error reporting.
+A lightweight, microtask-powered React Error Boundary combined with global window error handlers (`window.onerror` and `unhandledrejection`). Designed specifically for microfrontend architectures, data-heavy applications, and modern React setups to eliminate duplicate error reporting and support structural telemetry.
+
+---
+
+## Features
+
+- **Microtask-Based Deduplication:** Suppresses duplicate `window.onerror` and `unhandledrejection` triggers for errors caught by React Error Boundaries using native `queueMicrotask` and a global `WeakSet`.
+- **Microfrontend Isolation:** Built with global `Symbol` registries on `window` to operate seamlessly across separate micro-app bundles and host shells.
+- **Enterprise Telemetry Support:** Includes `<TelemetryErrorBoundary />` for enriching error payloads with structural metadata (`type`, `boundaryId`, `metadata`) ideal for telemetry platforms like Sentry, Azure Application Insights, or Datadog.
 
 ---
 
@@ -29,13 +37,12 @@ Because the error registry is attached to the global `window` instance using nat
 
 ## Installation
 
-```bash
+````bash
 npm install react-micro-boundary
 # or
 yarn add react-micro-boundary
 # or
 pnpm add react-micro-boundary
-```
 
 ## Quick Start
 
@@ -55,7 +62,7 @@ initGlobalErrorHandlers({
     console.error("Unhandled HTTP Error:", error);
   },
 });
-```
+````
 
 2. **Wrap Components with SmartErrorBoundary**
    Wrap any React component tree or microfrontend widget with `<SmartErrorBoundary>`:
@@ -106,6 +113,40 @@ If a failing component is non-critical (e.g., an optional recommendation widget)
 <SmartErrorBoundary fallback={null}>
   <OptionalBannerWidget/>
 </SmartErrorBoundary>
+```
+
+## Enterprise Telemetry Boundary (`<TelemetryErrorBoundary />`)
+
+In large data-heavy enterprise applications or microfrontends, you often need to classify errors by zone or widget type (e.g., TABLE_CELL, NAVBAR, SIDEBAR_WIDGET).
+Use `<TelemetryErrorBoundary />` to attach structural metadata to error payloads before sending them to your telemetry service:
+
+```typescript
+import React from 'react';
+import { TelemetryErrorBoundary } from 'react-micro-boundary';
+
+export function Dashboard() {
+  return (
+    <TelemetryErrorBoundary
+      type="TABLE_CELL"
+      boundaryId="cell_row_12_col_4"
+      metadata={{ reportId: 'BI_REPORT_99', column: 'Revenue' }}
+      fallback={<span>Error loading cell</span>}
+      onError={(error, context) => {
+        // Enriched payload ready for AppInsights / Sentry / Datadog
+        telemetryTracker.trackException({
+          exception: error,
+          properties: {
+            boundaryType: context.boundaryType, // "TABLE_CELL"
+            boundaryId: context.boundaryId,     // "cell_row_12_col_4"
+            ...context.metadata,
+          },
+        });
+      }}
+    >
+      <HeavyCellDataCalculator />
+    </TelemetryErrorBoundary>
+  );
+}
 ```
 
 ## Microfrontend Usage

@@ -9,3 +9,14 @@ export interface ExtendedWindow extends Window {
   [HANDLED_ERRORS_KEY]?: WeakSet<object>;
   [INIT_FLAG_KEY]?: boolean;
 }
+
+export interface SmartErrorBoundaryProps {
+  fallback?:
+    | React.ReactNode
+    | ((props: {
+        error: Error | null;
+        resetErrorBoundary: () => void;
+      }) => React.ReactNode);
+  onError?: (error: unknown) => void;
+  children: React.ReactNode;
+}
