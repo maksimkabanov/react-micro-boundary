@@ -37,7 +37,7 @@ yarn add react-micro-boundary
 pnpm add react-micro-boundary
 ```
 
-##Quick Start
+## Quick Start
 
 1. **Initialize Global Listeners (Host / Entry Point)**
    Call initGlobalErrorHandlers once at the root entry point of your application (or inside your Host app shell):
@@ -79,7 +79,8 @@ export function App() {
 }
 ```
 
-##Usage Scenarios
+## Usage Scenarios
+
 Render Prop Fallback with Reset Capability
 You can pass a function to fallback to render custom UI with access to the error object and a resetErrorBoundary callback:
 
@@ -97,7 +98,8 @@ You can pass a function to fallback to render custom UI with access to the error
 </SmartErrorBoundary>
 ```
 
-##Silent Fallback
+## Silent Fallback
+
 If a failing component is non-critical (e.g., an optional recommendation widget), set `fallback={null}` to hide it cleanly without breaking the rest of the page:
 
 ```typescript
@@ -106,7 +108,8 @@ If a failing component is non-critical (e.g., an optional recommendation widget)
 </SmartErrorBoundary>
 ```
 
-##Microfrontend Usage
+## Microfrontend Usage
+
 In a Microfrontend setup, each micro-app may have its own bundle and dependencies. react-micro-boundary guarantees a single global error state across all instances.
 Host App (Shell): Calls `initGlobalErrorHandlers()` to manage page-level error monitoring.
 Remote Apps (Widgets): Simply import `<SmartErrorBoundary>` and wrap top-level widget components.
