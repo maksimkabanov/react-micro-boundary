@@ -37,12 +37,13 @@ Because the error registry is attached to the global `window` instance using nat
 
 ## Installation
 
-````bash
+```bash
 npm install react-micro-boundary
 # or
 yarn add react-micro-boundary
 # or
 pnpm add react-micro-boundary
+```
 
 ## Quick Start
 
@@ -62,7 +63,7 @@ initGlobalErrorHandlers({
     console.error("Unhandled HTTP Error:", error);
   },
 });
-````
+```
 
 2. **Wrap Components with SmartErrorBoundary**
    Wrap any React component tree or microfrontend widget with `<SmartErrorBoundary>`:
