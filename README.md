@@ -152,7 +152,10 @@ export function Dashboard() {
 
 ## Microfrontend Usage
 
-In a Microfrontend setup, each micro-app may have its own bundle and dependencies. react-micro-boundary guarantees a single global error state across all instances.
+In microfrontend setups (Webpack Module Federation, Vite Single-SPA, independent script tags), separate micro-app bundles **cannot share JS module scope**. A standard module-level `WeakSet` breaks down because each bundle gets its own isolated instance in memory.
+
+`react-micro-boundary` solves this by using native JavaScript `Symbol.for()` attached to the global `window` object. This creates a **single shared global anchor** across all independent micro-frontend bundles without leaking internal state into module scopes.
+
 Host App (Shell): Calls `initGlobalErrorHandlers()` to manage page-level error monitoring.
 Remote Apps (Widgets): Simply import `<SmartErrorBoundary>` and wrap top-level widget components.
 
