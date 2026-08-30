@@ -185,6 +185,18 @@ Errors caught inside any remote Error Boundary are marked in the global `WeakSet
 | `fallback` | `ReactNode \| ((props: FallbackProps) => ReactNode)` | `<span>Failed to render component</span>` | Custom UI element or render prop function to display when an error occurs. |
 | `onError`  | `(error: Error, errorInfo: ErrorInfo) => void`       | `undefined`                               | Callback invoked when an error is caught by the boundary.                  |
 
+### `<TelemetryErrorBoundary />`
+
+An enterprise-ready wrapper around `<SmartErrorBoundary>` that enriches error payloads with structural context metadata for telemetry platforms (Sentry, Azure AppInsights, Datadog).
+
+| Prop         | Type                                                       | Default                                   | Description                                                                                                          |
+| :----------- | :--------------------------------------------------------- | :---------------------------------------- | :------------------------------------------------------------------------------------------------------------------- |
+| `type`       | `string`                                                   | **Required**                              | High-level area or entity classification (e.g., `'TABLE_CELL'`, `'NAVBAR'`, `'WIDGET'`).                             |
+| `boundaryId` | `string`                                                   | `undefined`                               | Unique instance identifier for precise location tracking and debugging.                                              |
+| `metadata`   | `Record<string, unknown>`                                  | `undefined`                               | Custom contextual object attached to the telemetry event payload.                                                    |
+| `fallback`   | `ReactNode \| ((props: FallbackProps) => ReactNode)`       | `<span>Failed to render component</span>` | Custom UI element or render prop function to display when an error occurs.                                           |
+| `onError`    | `(error: unknown, context: TelemetryErrorContext) => void` | `undefined`                               | Callback invoked with both the caught error and enriched context payload (`boundaryType`, `boundaryId`, `metadata`). |
+
 ## License
 
 MIT
